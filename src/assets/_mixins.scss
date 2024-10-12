@@ -1,0 +1,12 @@
+// src/styles/_mixins.scss
+
+@mixin chart-container {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: $background-color; // Use a variable for background
+}
+
+@mixin transition($properties, $duration) {
+  transition: $properties $duration;
+}
