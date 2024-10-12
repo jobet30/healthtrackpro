@@ -1,25 +1,13 @@
 <template>
-  <div class="profile-container">
-    <h1 class="profile-title">User Profile</h1>
-    <form @submit.prevent="updateProfile" class="profile-form">
+  <div class="login-container">
+    <h1 class="login-title">Login</h1>
+    <form @submit.prevent="handleLogin" class="login-form">
       <div class="form-group">
         <label for="username" class="form-label">Username</label>
         <input
           type="text"
           id="username"
-          v-model="user.username"
-          @blur="sanitizeInput('username')"
-          class="form-input"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label for="email" class="form-label">Email</label>
-        <input
-          type="email"
-          id="email"
-          v-model="user.email"
-          @blur="sanitizeInput('email')"
+          v-model="credentials.username"
           class="form-input"
           required
         />
@@ -29,88 +17,68 @@
         <input
           type="password"
           id="password"
-          v-model="user.password"
+          v-model="credentials.password"
           class="form-input"
           required
         />
       </div>
       <div class="form-actions">
-        <button type="submit" class="btn-update">Update Profile</button>
-        <button type="button" @click="logout" class="btn-logout">Logout</button>
+        <button type="submit" class="btn-login">Login</button>
+        <button type="button" @click="goToSignup" class="btn-signup">
+          Sign Up
+        </button>
       </div>
     </form>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      user: {
+      credentials: {
         username: '',
-        email: '',
         password: '',
       },
     }
   },
-  mounted() {
-    this.loadUserProfile()
-  },
   methods: {
-    loadUserProfile() {
-      const storedUser = JSON.parse(localStorage.getItem('userProfile'))
-      if (storedUser) {
-        this.user = storedUser
-      }
+    handleLogin() {
+      // Implement your login logic here
+      alert(`Logging in with ${this.credentials.username}`)
     },
-    sanitizeInput(field) {
-      this.user[field] = this.user[field].trim().replace(/<[^>]*>/g, '')
-    },
-    updateProfile() {
-      localStorage.setItem('userProfile', JSON.stringify(this.user))
-      alert('Profile updated successfully')
-    },
-    logout() {
-      localStorage.removeItem('authToken')
-      localStorage.removeItem('userProfile')
-      this.$router.push({ name: 'Login' })
+    goToSignup() {
+      this.$router.push({ name: 'Signup' })
     },
   },
 }
 </script>
+
 <style scoped lang="scss">
 $primary-color: #007bff;
-$secondary-color: #dc3545;
 $background-color: #f8f9fa;
 $text-color: #343a40;
 $input-border-color: #ced4da;
 $input-focus-color: #80bdff;
 $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
-@mixin transition($property, $duration) {
-  transition: $property $duration;
-}
-
-.profile-container {
-  max-width: 600px;
+.login-container {
+  max-width: 400px;
   margin: 2rem auto;
   padding: 1.5rem;
   border-radius: 0.5rem;
   background-color: $background-color;
   box-shadow: $box-shadow;
 
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-
-  .profile-title {
+  .login-title {
     font-size: 2rem;
     font-weight: bold;
     color: $text-color;
-    margin-bottom: 1rem;
     text-align: center;
+    margin-bottom: 1.5rem;
   }
 
-  .profile-form {
+  .login-form {
     display: flex;
     flex-direction: column;
 
@@ -118,9 +86,8 @@ $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       margin-bottom: 1.5rem;
 
       .form-label {
-        display: block;
         margin-bottom: 0.5rem;
-        font-weight: 600;
+        font-weight: bold;
         color: $text-color;
       }
 
@@ -129,16 +96,11 @@ $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         padding: 0.75rem;
         border: 1px solid $input-border-color;
         border-radius: 0.25rem;
-        @include transition(border-color, 0.2s);
 
         &:focus {
           border-color: $input-focus-color;
           outline: none;
           box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
-        }
-
-        &::placeholder {
-          color: lighten($text-color, 30%);
         }
       }
     }
@@ -147,17 +109,16 @@ $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
 
-      .btn-update,
-      .btn-logout {
+      .btn-login,
+      .btn-signup {
         padding: 0.75rem 1.25rem;
         border: none;
         border-radius: 0.25rem;
         color: #fff;
         cursor: pointer;
-        @include transition(background-color, 0.2s);
         font-weight: bold;
 
-        &.btn-update {
+        &.btn-login {
           background-color: $primary-color;
 
           &:hover {
@@ -165,11 +126,11 @@ $box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           }
         }
 
-        &.btn-logout {
-          background-color: $secondary-color;
+        &.btn-signup {
+          background-color: $text-color;
 
           &:hover {
-            background-color: darken($secondary-color, 10%);
+            background-color: darken($text-color, 10%);
           }
         }
       }
